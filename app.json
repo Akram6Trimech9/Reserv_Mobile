@@ -16,10 +16,13 @@
       "supportsTablet": true
     },
     "android": {
+      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      
+      "package": "com.akramtrimech.myapp"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +34,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fcb7d886-df29-420f-937f-ae1cf09df427"
+      }
     }
   }
 }
