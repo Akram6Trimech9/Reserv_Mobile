@@ -59,18 +59,18 @@ const UpdateProfile = ({ userData = {} }) => {
             return;
         }
 
-        try {
-            const response = await updateProfile(record);
-            if (response.status === 200) {
-                Alert.alert("Success", "Profile updated successfully!");
-            } else {
-                Alert.alert("Error", response.data.message || "Something went wrong.");
-            }
-        } catch (error) {
-            Alert.alert("Error", error.response?.data?.error || "Failed to update profile. Please try again later.");
-        } finally {
-            setLoading(false);
-        }
+        // try {
+        //     const response = await updateProfile(record);
+        //     if (response.status === 200) {
+        //         Alert.alert("Success", "Profile updated successfully!");
+        //     } else {
+        //         Alert.alert("Error", response.data.message || "Something went wrong.");
+        //     }
+        // } catch (error) {
+        //     Alert.alert("Error", error.response?.data?.error || "Failed to update profile. Please try again later.");
+        // } finally {
+        //     setLoading(false);
+        // }
     };
 
     const validateInputs = () => {
@@ -145,9 +145,76 @@ const UpdateProfile = ({ userData = {} }) => {
 </Modal>
 
 
+
                         <PhoneInput
+                            phoneInputStyles={{
+                                container: {
+                                    flexDirection: 'row',
+                                    height: hp(7.2),
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    borderWidth: 0.4,
+                                    borderColor: theme.colors.text,
+                                    borderRadius: theme.radius.xxl,
+                                    borderCurve: 'continuous',
+                                    paddingHorizontal: 15,
+                                },
+                                flagContainer: {
+                                    borderTopLeftRadius: 7,
+                                    borderBottomLeftRadius: 7,
+                                    backgroundColor: 'white',
+                                    justifyContent: 'center',
+                                },
+                                flag: {},
+                                caret: {
+                                    fontSize: 16,
+                                },
+                                divider: {
+                                }
+
+
+                            }}
+                            modalStyles={{
+                                modal: {
+                                     borderWidth: 1,
+                                },
+                                backdrop: {},
+                                divider: {
+                                    backgroundColor: 'transparent',
+                                },
+                                countriesList: {},
+                                searchInput: {
+                                    borderRadius: 8,
+                                    borderWidth: 1,
+                                      paddingHorizontal: 12,
+                                    height: 46,
+                                },
+                                countryButton: {
+                                    borderWidth: 1,
+                                    borderColor:'white',
+                                      marginVertical: 4,
+                                    paddingVertical: 0,
+                                },
+                                noCountryText: {},
+                                noCountryContainer: {},
+                                flag: {
+                                    color: '#FFFFFF',
+                                    fontSize: 20,
+                                },
+                                callingCode: {
+                                    color: 'black',
+                                },
+                                countryName: {
+                                    color: 'black',
+                                },
+                            }}
                             value={inputValue}
+                            language="fr"
+                            defaultCountry="FR"
                             onChangePhoneNumber={handleInputValue}
+                            selectedCountry={selectedCountry}
+                            onChangeSelectedCountry={handleSelectedCountry}
+                            placeholder='Votre numero'
                         />
 
                         <Button title='Update Profile' loading={loading} onPress={onSubmit} />

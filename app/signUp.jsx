@@ -327,8 +327,6 @@ const SignUp = () => {
                                 flag: {},
                                 caret: {
                                     fontSize: 16,
-                                },
-                                divider: {
                                 }
 
 

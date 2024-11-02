@@ -15,6 +15,7 @@ import Icon, { Icons } from "../../components/Icons";
 import { hp, wp } from "../../helpers/common";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import UpdateProfile from "../../components/Update";
+import { ScrollView } from "react-native-web";
 
 const profile_picture_default = require("../../assets/images/profile_picture.png");
 const account = {iconType :Icons.MaterialCommunityIcons , name:'account' , color:'green' , size:25}
@@ -104,13 +105,14 @@ const ProfileScreen = () => {
 
   if(openUpdate === 'Account'){
      return  (
-      <ScreenWrapper bg="white">
+      <ScreenWrapper bg="white" style={styles.scrollViewContent}>
       <StatusBar style="dark" />
   
-      
       <View style={styles.container}>
-   <UpdateProfile />
-        </View></ScreenWrapper>
+        <UpdateProfile  >
+          </UpdateProfile>
+        </View>
+        </ScreenWrapper>
      )
   }
 
@@ -174,6 +176,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+},
   propicArea: {
     width: wp(40),
     height: wp(40),
