@@ -58,3 +58,10 @@ export const ResendLink = async (data) => {
     });
     return response;  
 };
+
+
+export const getCurrent = async () => { 
+     const response = await axios.get(`${API_URL}email/resend-confirmation
+`);
+   return response;  
+}
