@@ -14,6 +14,7 @@ import * as ImageManipulator from 'expo-image-manipulator';
 import Icon, { Icons } from "../../components/Icons";
 import { hp, wp } from "../../helpers/common";
 import ScreenWrapper from "../../components/ScreenWrapper";
+import UpdateProfile from "../../components/Update";
 
 const profile_picture_default = require("../../assets/images/profile_picture.png");
 const account = {iconType :Icons.MaterialCommunityIcons , name:'account' , color:'green' , size:25}
@@ -55,9 +56,10 @@ const theme = {
 const ProfileScreen = () => {
   const [profilePicture, setProfilePicture] = useState('../../assets/images/profile_picture.png');
   const [buttonScale, setButtonScale] = useState({});
-
-  const handlePressIn = (index) => {
-    setButtonScale(prev => ({ ...prev, [index]: 0.95 }));
+  const [openUpdate , setOpenUpdate] = useState()
+  const handlePressIn = (index , item) => {
+     setButtonScale(prev => ({ ...prev, [index]: 0.95 }));
+     setOpenUpdate(item)
   };
 
   const handlePressOut = (index) => {
@@ -100,9 +102,23 @@ const ProfileScreen = () => {
     }
   };
 
+  if(openUpdate === 'Account'){
+     return  (
+      <ScreenWrapper bg="white">
+      <StatusBar style="dark" />
+  
+      
+      <View style={styles.container}>
+   <UpdateProfile />
+        </View></ScreenWrapper>
+     )
+  }
+
   return (
     <ScreenWrapper bg="white">
       <StatusBar style="dark" />
+
+      
       <View style={styles.container}>
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.topSection}>
@@ -123,7 +139,7 @@ const ProfileScreen = () => {
                 key={index}
                 style={[styles.buttonSection, { transform: [{ scale: buttonScale[index] || 1 }] }]}
                 activeOpacity={0.9}
-                onPressIn={() => handlePressIn(index)}
+                onPressIn={() => handlePressIn(index , item.name)}
                 onPressOut={() => handlePressOut(index)}
               >
                 <View style={styles.buttonArea}>

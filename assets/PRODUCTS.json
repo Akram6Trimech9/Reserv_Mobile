@@ -1,30 +1,34 @@
 [
-    {
+  {
       "id": "1",
-      "name": "Mod Hippo Chair",
-      "price": "$126.34",
-      "color": "Walnut and Cream",
-      "imageUrl": "images/mod_hippo_chair.png"
-    },
-    {
+      "name": "Camp Nou",
+      "capacity": "99,354",
+      "location": "Barcelona, Spain",
+      "team": "FC Barcelona",
+      "imageUrl": "images/camp_nou.png"
+  },
+  {
       "id": "2",
-      "name": "Eiffel Side Chairs Wood",
-      "price": "$126.34",
-      "color": "Dove, Set of 2 Orange",
-      "imageUrl": "images/eiffel_side_chairs.png"
-    },
-    {
+      "name": "Old Trafford",
+      "capacity": "74,879",
+      "location": "Manchester, England",
+      "team": "Manchester United",
+      "imageUrl": "images/old_trafford.png"
+  },
+  {
       "id": "3",
-      "name": "Plush Accent Chair",
-      "price": "$126.34",
-      "color": "Light Grey",
-      "imageUrl": "images/plush_accent_chair.png"
-    },
-    {
+      "name": "Allianz Arena",
+      "capacity": "75,000",
+      "location": "Munich, Germany",
+      "team": "Bayern Munich",
+      "imageUrl": "images/allianz_arena.png"
+  },
+  {
       "id": "4",
-      "name": "Remark Arm Chair",
-      "price": "$126.34",
-      "color": "Yellow",
-      "imageUrl": "images/remark_arm_chair.png"
-    }
-  ]
+      "name": "Santiago Bernabéu",
+      "capacity": "81,044",
+      "location": "Madrid, Spain",
+      "team": "Real Madrid",
+      "imageUrl": "images/santiago_bernabeu.png"
+  }
+]

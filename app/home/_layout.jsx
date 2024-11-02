@@ -30,12 +30,12 @@ const TabLayout = () => {
   return (
     <ScreenWrapper bg="white">
       <Drawer.Navigator drawerContent={(props) => <CustomDrawer {...props} />}>
+       
         <Drawer.Screen
           name="Home"
-          component={Home}
+          component={TabsLayout}
           options={{ headerShown: false }}
         />
-      
       </Drawer.Navigator>
 
       <StatusBar backgroundColor="#161622" style="light" />
