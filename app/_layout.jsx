@@ -2,11 +2,12 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { Stack } from 'expo-router'
 import GlobalProvider from '../context/GlobalProvider'
+import { UserProvider } from '../context/UserContext'
 
 const _layout = () => {
   return (
     <GlobalProvider>
-
+<UserProvider>
     <Stack>
       
     {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
@@ -18,6 +19,7 @@ const _layout = () => {
     <Stack.Screen name="thankYouForSignup"   options={{ headerShown: false }} />
     <Stack.Screen name="home" options={{ headerShown: false }} />
   </Stack>
+  </UserProvider>
   </GlobalProvider>
   )
 }

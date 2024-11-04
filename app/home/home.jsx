@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ScreenWrapper from '../../components/ScreenWrapper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useGlobalContext } from '../../context/GlobalProvider'; // Adjust the path as necessary
@@ -16,6 +16,7 @@ import CarouselI from '../../components/Carousel';
 import { useNavigation } from 'expo-router';
 import Icon, { Icons } from '../../components/Icons';
 import { theme } from '../../constants/theme';
+import { UserContext } from '../../context/UserContext';
 
 const stadium1 = require("../../assets/images/s1.jpg");
 const stadium2 = require("../../assets/images/s2.jpg");
@@ -25,11 +26,12 @@ const Home = () => {
     const { isLogged, user } = useGlobalContext(); 
     const [token, setToken] = useState('');
     const navigation = useNavigation();
-
+    const { currentUser } = useContext(UserContext);
     useEffect(() => {
         const fetchToken = async () => {
             const accessToken = await AsyncStorage.getItem('access_token');
             setToken(accessToken); 
+            console.log('cu',currentUser);
         };
 
         fetchToken(); 

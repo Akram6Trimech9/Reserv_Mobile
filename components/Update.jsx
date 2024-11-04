@@ -1,33 +1,34 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, Alert, Modal, TouchableWithoutFeedback } from 'react-native';
-import React, { useState, useRef } from 'react';
-  import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useState, useRef, useContext, useEffect } from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { formatDate } from '../helpers/staticFunctions';
 import { CountryPicker } from "react-native-country-codes-picker";
 import PhoneInput from 'react-native-international-phone-number';
-// import { updateProfile } from '../services/auth'; // Adjust your service method
 import { theme } from '../constants/theme';
 import { hp, wp } from '../helpers/common';
 import ScreenWrapper from './ScreenWrapper';
 import Input from './Input';
 import Button from './Button';
+import BackButton2 from './BackButtonCust';
+import { UserContext } from '../context/UserContext';
+import { updateUserProfile } from '../services/auth';
 
-const UpdateProfile = ({ userData = {} }) => {
-    const [date, setDate] = useState(new Date());
+const UpdateProfile = ({ setOpenUpdate }) => {
+    const { currentUser, setCurrentUser ,getCurrentUser } = useContext(UserContext);
+    
     const [loading, setLoading] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
-    const [dateOfBirth, setDateOfBirth] = useState(formatDate(new Date())); // Format initial date
-    const [selectGender, setSelectGender] = useState(userData?.gender || "male");
-    const [countryCode, setCountryCode] = useState(userData?.countryCode || '');
-    const [inputValue, setInputValue] = useState(userData?.phoneNumber || '');    const [showCountryPicker, setShowCountryPicker] = useState(false);
-     const [errors, setErrors] = useState({});
+    const [dateOfBirth, setDateOfBirth] = useState(currentUser.dateOfBirth || formatDate(new Date()));
+    const [countryCode, setCountryCode] = useState(currentUser.country || '');
+    const [inputValue, setInputValue] = useState(currentUser.phoneNumber || '');
+    const [showCountryPicker, setShowCountryPicker] = useState(false);
     const [selectedCountry, setSelectedCountry] = useState(null);
-
-    const nameRef = useRef(userData.firstName);
-    const lastNameRef = useRef(userData.lastName);
-    const emailRef = useRef(userData.email);
-    const addressRef = useRef(userData.address);
-    const passwordRef = useRef('');
+    
+    const nameRef = useRef(currentUser.firstName);
+    const lastNameRef = useRef(currentUser.lastName);
+    const emailRef = useRef(currentUser.email);
+    const addressRef = useRef(currentUser.address);
 
     const handleInputValue = (phoneNumber) => {
         setInputValue(phoneNumber);
@@ -37,46 +38,44 @@ const UpdateProfile = ({ userData = {} }) => {
         setSelectedCountry(country);
     };
 
+    useEffect(() => {
+        if (currentUser) {
+            setInputValue(currentUser.phoneNumber || '');
+            setSelectedCountry({
+                callingCode: currentUser.phoneNumber.slice(0, 3), // Adjust if needed
+                name: { fr: currentUser.country },
+            });
+        }
+    }, [currentUser]);
+
     const onSubmit = async () => {
         setLoading(true);
         const record = {
-            password: passwordRef.current,
-            gender: selectGender,
-            dateOfBirth: dateOfBirth,
-            phoneNumber: `${selectedCountry.callingCode}${inputValue.trim().replace(/\s+/g, '')}`,
-            country: selectedCountry.name.fr,
             firstName: nameRef.current,
             lastName: lastNameRef.current,
             email: emailRef.current,
             address: addressRef.current,
+            dateOfBirth,
+            phoneNumber: inputValue,
+            country: selectedCountry.name.fr,
         };
+        console.log('data',record)
 
-        const errors = validateInputs();
-        if (Object.keys(errors).length > 0) {
-            const errorMessages = Object.values(errors).join('\n');
-            Alert.alert('Update Profile', errorMessages);
+        try {
+            // Get user ID
+            const userId = currentUser.id; // Ensure you have the correct user ID
+            console.log('user:',userId);
+            const updatedUserResp = await updateUserProfile(userId, record); // Call the update function
+           // const updatedUser = await getCurrent(currentUser.token); // Assume you have currentUser.token
+            //setCurrentUser(updatedUser);
+            console.log('kk',updatedUserResp);
+            setIsEditing(false);
+            Alert.alert('Success', 'Profile updated successfully!');
+        } catch (error) {
+            Alert.alert('Error', 'Failed to update profile. Please try again.');
+        } finally {
             setLoading(false);
-            return;
         }
-
-        // try {
-        //     const response = await updateProfile(record);
-        //     if (response.status === 200) {
-        //         Alert.alert("Success", "Profile updated successfully!");
-        //     } else {
-        //         Alert.alert("Error", response.data.message || "Something went wrong.");
-        //     }
-        // } catch (error) {
-        //     Alert.alert("Error", error.response?.data?.error || "Failed to update profile. Please try again later.");
-        // } finally {
-        //     setLoading(false);
-        // }
-    };
-
-    const validateInputs = () => {
-        const errors = {};
-        // Similar validation logic as in the SignUp component
-        return errors;
     };
 
     const toggleDatePicker = () => {
@@ -87,7 +86,6 @@ const UpdateProfile = ({ userData = {} }) => {
         toggleDatePicker();
         if (type === "set") {
             const currentDate = selectedDate || date;
-            setDate(currentDate);
             setDateOfBirth(formatDate(currentDate));
         }
     };
@@ -102,15 +100,43 @@ const UpdateProfile = ({ userData = {} }) => {
 
     return (
         <ScreenWrapper bg="white">
+            <View style={styles.header}>
+                <BackButton2 setOpenUpdate={setOpenUpdate} />
+                <Text
+                    style={[styles.editText, isEditing && styles.editingText]}
+                    onPress={() => setIsEditing(!isEditing)}
+                >
+                    Edit 
+                </Text>
+            </View>
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <View style={styles.container}>
                     <Text style={styles.welcomeText}>Update Profile</Text>
                     <View style={styles.form}>
-                        {/* Input fields similar to SignUp */}
-                        <Input placeholder='First Name' defaultValue={userData.firstName} onChangeText={value => nameRef.current = value} />
-                        <Input placeholder='Last Name' defaultValue={userData.lastName} onChangeText={value => lastNameRef.current = value} />
-                        <Input placeholder='Email' defaultValue={userData.email} onChangeText={value => emailRef.current = value} />
-                        <Input placeholder='Address' defaultValue={userData.address} onChangeText={value => addressRef.current = value} />
+                        <Input
+                            placeholder='First Name'
+                            defaultValue={currentUser.firstName}
+                            editable={isEditing}
+                            onChangeText={value => nameRef.current = value}
+                        />
+                        <Input
+                            placeholder='Last Name'
+                            defaultValue={currentUser.lastName}
+                            editable={isEditing}
+                            onChangeText={value => lastNameRef.current = value}
+                        />
+                        <Input
+                            placeholder='Email'
+                            defaultValue={currentUser.email}
+                            editable={isEditing}
+                            onChangeText={value => emailRef.current = value}
+                        />
+                        <Input
+                            placeholder='Address'
+                            defaultValue={currentUser.address}
+                            editable={isEditing}
+                            onChangeText={value => addressRef.current = value}
+                        />
 
                         <Pressable onPress={toggleDatePicker}>
                             <Input placeholder='Date of Birth' value={dateOfBirth} editable={false} />
@@ -119,7 +145,7 @@ const UpdateProfile = ({ userData = {} }) => {
                             <DateTimePicker
                                 mode='date'
                                 display='spinner'
-                                value={date}
+                                value={new Date(dateOfBirth)}
                                 onChange={onChangeDate}
                             />
                         )}
@@ -128,98 +154,35 @@ const UpdateProfile = ({ userData = {} }) => {
                             <Input placeholder='Country' value={countryCode} editable={false} />
                         </Pressable>
                         <Modal visible={showCountryPicker} transparent={true} animationType="slide">
-    <TouchableWithoutFeedback onPress={closeCountryPicker}>
-        <View style={styles.modalOverlay} />
-    </TouchableWithoutFeedback>
-    <View style={styles.modalContent}>
-        <CountryPicker
-            show={showCountryPicker}
-            pickerButtonOnPress={(item) => {
-                setCountryCode(item.name.fr); // Sets the selected country name
-                setSelectedCountry(item);     // Updates the selected country object
-                closeCountryPicker();         // Closes the modal
-            }}
-            style={{ modal: { height: '80%' } }}
-        />
-    </View>
-</Modal>
-
-
+                            <TouchableWithoutFeedback onPress={closeCountryPicker}>
+                                <View style={styles.modalOverlay} />
+                            </TouchableWithoutFeedback>
+                            <View style={styles.modalContent}>
+                                <CountryPicker
+                                    show={showCountryPicker}
+                                    pickerButtonOnPress={(item) => {
+                                        setCountryCode(item.name.fr);
+                                        setSelectedCountry(item);
+                                        closeCountryPicker();
+                                    }}
+                                    style={{ modal: { height: '80%' } }}
+                                />
+                            </View>
+                        </Modal>
 
                         <PhoneInput
-                            phoneInputStyles={{
-                                container: {
-                                    flexDirection: 'row',
-                                    height: hp(7.2),
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    borderWidth: 0.4,
-                                    borderColor: theme.colors.text,
-                                    borderRadius: theme.radius.xxl,
-                                    borderCurve: 'continuous',
-                                    paddingHorizontal: 15,
-                                },
-                                flagContainer: {
-                                    borderTopLeftRadius: 7,
-                                    borderBottomLeftRadius: 7,
-                                    backgroundColor: 'white',
-                                    justifyContent: 'center',
-                                },
-                                flag: {},
-                                caret: {
-                                    fontSize: 16,
-                                },
-                                divider: {
-                                }
-
-
-                            }}
-                            modalStyles={{
-                                modal: {
-                                     borderWidth: 1,
-                                },
-                                backdrop: {},
-                                divider: {
-                                    backgroundColor: 'transparent',
-                                },
-                                countriesList: {},
-                                searchInput: {
-                                    borderRadius: 8,
-                                    borderWidth: 1,
-                                      paddingHorizontal: 12,
-                                    height: 46,
-                                },
-                                countryButton: {
-                                    borderWidth: 1,
-                                    borderColor:'white',
-                                      marginVertical: 4,
-                                    paddingVertical: 0,
-                                },
-                                noCountryText: {},
-                                noCountryContainer: {},
-                                flag: {
-                                    color: '#FFFFFF',
-                                    fontSize: 20,
-                                },
-                                callingCode: {
-                                    color: 'black',
-                                },
-                                countryName: {
-                                    color: 'black',
-                                },
-                            }}
                             value={inputValue}
-                            language="fr"
-                            defaultCountry="FR"
                             onChangePhoneNumber={handleInputValue}
                             selectedCountry={selectedCountry}
                             onChangeSelectedCountry={handleSelectedCountry}
-                            placeholder='Votre numero'
+                            placeholder='Your number'
+                            editable={isEditing}
                         />
-
-                        <Button title='Update Profile' loading={loading} onPress={onSubmit} />
                     </View>
                 </View>
+                {isEditing && (
+                    <Button title='Save Changes' loading={loading} onPress={onSubmit} style={styles.button} />
+                )}
             </ScrollView>
         </ScreenWrapper>
     );
@@ -232,14 +195,16 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: wp(5),
         paddingBottom: hp(4),
+        marginTop: hp(2),
     },
     scrollViewContent: {
         flexGrow: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        paddingBottom: 100,
     },
     welcomeText: {
         fontSize: hp(4),
-        fontWeight: theme.fonts.bold,
+        fontWeight: '600',
         color: theme.colors.text,
         marginBottom: hp(2),
     },
@@ -259,5 +224,32 @@ const styles = StyleSheet.create({
         padding: 20,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: wp(5),
+        paddingVertical: hp(1),
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(0, 0, 0, 0.1)',
+        backgroundColor: theme.colors.background,
+    },
+    editText: {
+        fontSize: hp(2.5),
+        color: theme.colors.primary,
+        fontWeight: '600',
+    },
+    editingText: {
+        color: theme.colors.secondary,
+    },
+    button: {
+        marginTop: hp(3),
+        backgroundColor: theme.colors.primary,
+        borderRadius: 10,
+        paddingVertical: hp(2),
+        paddingHorizontal: wp(5),
+        alignSelf: 'center',
+        width: 10,
     },
 });

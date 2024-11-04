@@ -11,7 +11,7 @@ const GlobalProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getCurrent()
+    getCurrent()    
       .then((res) => {
         if (res) {
           setIsLogged(true);

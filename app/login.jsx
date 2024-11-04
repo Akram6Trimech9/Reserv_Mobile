@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Alert, Keyboard, Pressable } from 'react-native';
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import Icon from '../assets/icons';
 import ScreenWrapper from '../components/ScreenWrapper';
 import { theme } from '../constants/theme';
@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { login } from '../services/auth';
 import { ACESS } from '../constants/enum';
 import { useGlobalContext } from '../context/GlobalProvider';
+import { UserContext } from '../context/UserContext';
 
 const Login = () => {
     const router = useRouter();
@@ -21,7 +22,7 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const { setIsLogged, setUser } = useGlobalContext();  
-
+    const { getCurrentUser, saveUser } = useContext(UserContext);
     const onSubmit = async () => {
         Keyboard.dismiss();  
         const signinData = { email: emailRef.current, password: passwordRef.current };
@@ -40,7 +41,7 @@ const Login = () => {
                 const { access_token, refresh_token } = loginRes.data;
                 setIsLogged(true)
                 setUser("wiou")
-
+                await getCurrentUser(access_token);
                 await AsyncStorage.setItem('access_token', access_token);
                 await AsyncStorage.setItem('refresh_token', refresh_token);
     

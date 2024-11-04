@@ -1,11 +1,11 @@
 import axios from 'axios';
 
- const API_URL = 'http://57.128.159.235:3000/api/auth/';
+ const API_URL = 'https://api.my-five.be/api/';
 
  export const signUp = async (userData) => {
     try {
         console.log('userData', userData);
-        const response = await axios.post(`${API_URL}local/signup`, userData, {
+        const response = await axios.post(`${API_URL}auth/local/signup`, userData, {
             headers: {
                 'Content-Type': 'application/json',  
             },
@@ -29,7 +29,7 @@ import axios from 'axios';
 };
 
 export const login = async (data) => {
-    const response = await axios.post(`${API_URL}local/signin`, data, {
+    const response = await axios.post(`${API_URL}auth/local/signin`, data, {
         headers: {
             'Content-Type': 'application/json',  
         },
@@ -39,7 +39,7 @@ export const login = async (data) => {
 };
 
 export const forgotPassword = async (data) => {
-    const response = await axios.post(`${API_URL}forgot-password`, data, {
+    const response = await axios.post(`${API_URL}auth/forgot-password`, data, {
         headers: {
             'Content-Type': 'application/json', 
         },
@@ -50,7 +50,7 @@ export const forgotPassword = async (data) => {
 
 export const ResendLink = async (data) => {
     console.log(API_URL)
-     const response = await axios.post(`${API_URL}email/resend-confirmation
+     const response = await axios.post(`${API_URL}auth/email/resend-confirmation
 `, data, {
         headers: {
             'Content-Type': 'application/json', 
@@ -60,8 +60,25 @@ export const ResendLink = async (data) => {
 };
 
 
-export const getCurrent = async () => { 
-     const response = await axios.get(`${API_URL}email/resend-confirmation
-`);
-   return response;  
+export const getCurrent = async (token) => { 
+    try {
+        const response = await axios.get(`${API_URL}user/current-user`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response;  
+    } catch (error) {
+        console.error('Error in getCurrent:', error);
+        throw error; // Optionally rethrow the error for further handling
+    }
 }
+export const updateUserProfile = async (userId, userData) => {
+    try {
+        const response = await axios.patch(`${API_URL}user/${userId}`, userData);
+        return response; 
+    } catch (error) {
+        console.error('Error updating user profile:', error);
+        throw error; 
+    }
+};

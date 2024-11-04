@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -57,7 +57,10 @@ const theme = {
 const ProfileScreen = () => {
   const [profilePicture, setProfilePicture] = useState('../../assets/images/profile_picture.png');
   const [buttonScale, setButtonScale] = useState({});
-  const [openUpdate , setOpenUpdate] = useState()
+  const [openUpdate , setOpenUpdate] = useState('main')
+  useEffect(()=>{
+console.log('rr',openUpdate);
+  },[openUpdate]);
   const handlePressIn = (index , item) => {
      setButtonScale(prev => ({ ...prev, [index]: 0.95 }));
      setOpenUpdate(item)
@@ -109,7 +112,7 @@ const ProfileScreen = () => {
       <StatusBar style="dark" />
   
       <View style={styles.container}>
-        <UpdateProfile  >
+        <UpdateProfile  setOpenUpdate={setOpenUpdate}  >
           </UpdateProfile>
         </View>
         </ScreenWrapper>
