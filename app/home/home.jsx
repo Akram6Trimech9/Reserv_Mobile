@@ -17,6 +17,7 @@ import { useNavigation } from 'expo-router';
 import Icon, { Icons } from '../../components/Icons';
 import { theme } from '../../constants/theme';
 import { UserContext } from '../../context/UserContext';
+import Header from '../../components/Header';
 
 const stadium1 = require("../../assets/images/s1.jpg");
 const stadium2 = require("../../assets/images/s2.jpg");
@@ -26,6 +27,9 @@ const Home = () => {
     const { isLogged, user } = useGlobalContext(); 
     const [token, setToken] = useState('');
     const navigation = useNavigation();
+
+
+    const title = "Home"
     const { currentUser } = useContext(UserContext);
     useEffect(() => {
         const fetchToken = async () => {
@@ -44,15 +48,7 @@ const Home = () => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.container}>
                     {/* Top Section */}
-                    <View style={styles.topSection}>
-                        <Text style={styles.topText}>Stadiums</Text>
-                        <TouchableOpacity activeOpacity={0.8} style={styles.menuIconArea} 
-                            onPress={() => navigation.openDrawer()}
-                        >
-                            <Icon resizeMode="contain"
-                                style={styles.menuIcon} type={Icons.Ionicons} name='menu' color={theme.colors.dark} size={35} />
-                        </TouchableOpacity>
-                    </View>
+                    <Header  title={title} />
         
                     {/* Category Section */}
                     <View style={styles.categorySection}>
@@ -114,27 +110,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         backgroundColor: "white",
     },
-    topSection: {
-        height: 50,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
-    topText: {
-        fontSize: 32,
-        fontWeight: "bold",
-        letterSpacing: 1,
-        color: theme.colors.dark,
-    },
-    menuIconArea: {
-        width: 50,
-        height: 50,
-        padding: 10,
-    },
-    menuIcon: {
-        width: "100%",
-        height: "100%",
-    },
+  
     categorySection: {
         marginTop: 15,
     },

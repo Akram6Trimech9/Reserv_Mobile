@@ -120,11 +120,14 @@ console.log('rr',openUpdate);
   }
 
   return (
-    <ScreenWrapper bg="white">
-      <StatusBar style="dark" />
+    <ScreenWrapper bg="white" style={styles.safeArea} >
+
+    <StatusBar style="dark" />
+    <View style={styles.container}>
+
+  
 
       
-      <View style={styles.container}>
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.topSection}>
             <TouchableOpacity onPress={pickImage} style={styles.propicArea}>
@@ -168,8 +171,10 @@ export default ProfileScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'white',
+      backgroundColor: 'white',
+    marginHorizontal: 10,
+    flex:1
+
   },
   safeArea: {
     flex: 1,

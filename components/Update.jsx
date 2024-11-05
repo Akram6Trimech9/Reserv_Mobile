@@ -102,12 +102,7 @@ const UpdateProfile = ({ setOpenUpdate }) => {
         <ScreenWrapper bg="white">
             <View style={styles.header}>
                 <BackButton2 setOpenUpdate={setOpenUpdate} />
-                <Text
-                    style={[styles.editText, isEditing && styles.editingText]}
-                    onPress={() => setIsEditing(!isEditing)}
-                >
-                    Edit 
-                </Text>
+              
             </View>
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <View style={styles.container}>
@@ -116,25 +111,22 @@ const UpdateProfile = ({ setOpenUpdate }) => {
                         <Input
                             placeholder='First Name'
                             defaultValue={currentUser.firstName}
-                            editable={isEditing}
                             onChangeText={value => nameRef.current = value}
                         />
                         <Input
                             placeholder='Last Name'
                             defaultValue={currentUser.lastName}
-                            editable={isEditing}
                             onChangeText={value => lastNameRef.current = value}
                         />
                         <Input
                             placeholder='Email'
                             defaultValue={currentUser.email}
-                            editable={isEditing}
                             onChangeText={value => emailRef.current = value}
+                            editable={false}
                         />
                         <Input
                             placeholder='Address'
                             defaultValue={currentUser.address}
-                            editable={isEditing}
                             onChangeText={value => addressRef.current = value}
                         />
 
@@ -170,20 +162,15 @@ const UpdateProfile = ({ setOpenUpdate }) => {
                             </View>
                         </Modal>
 
-                        <PhoneInput
-                            value={inputValue}
-                            onChangePhoneNumber={handleInputValue}
-                            selectedCountry={selectedCountry}
-                            onChangeSelectedCountry={handleSelectedCountry}
-                            placeholder='Your number'
-                            editable={isEditing}
+                       <Input
+                            placeholder='Phone Number'
+                            defaultValue={currentUser.phoneNumber}
+                            onChangeText={value =>  setInputValue(value) }
                         />
                     </View>
                 </View>
-                {isEditing && (
-                    <Button title='Save Changes' loading={loading} onPress={onSubmit} style={styles.button} />
-                )}
-            </ScrollView>
+                      <Button title='Save Changes' loading={loading} onPress={onSubmit} style={styles.button} />
+             </ScrollView>
         </ScreenWrapper>
     );
 };
@@ -231,9 +218,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: wp(5),
         paddingVertical: hp(1),
-        borderBottomWidth: 1,
-        borderBottomColor: 'rgba(0, 0, 0, 0.1)',
-        backgroundColor: theme.colors.background,
+          backgroundColor: theme.colors.background,
     },
     editText: {
         fontSize: hp(2.5),

@@ -76,6 +76,8 @@ const PublicationFeed = () => {
 
     return (
         <View style={styles.container}>
+                         {/* <Header  title="Publications" /> */}
+
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Fil d'actualité</Text>
                 <Pressable style={styles.addPublicationButton} onPress={() => setModalVisible(true)}>
