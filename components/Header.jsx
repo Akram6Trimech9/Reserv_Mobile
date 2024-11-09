@@ -1,12 +1,10 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { useNavigation } from 'expo-router';
-import Icon, { Icons } from './Icons';
+ import Icon, { Icons } from './Icons';
 import { theme } from '../constants/theme';
 
 const Header = ({ title = '' }) => {
-  const navigation = useNavigation();
-
+ 
   return (
     <View style={styles.cardContainer}>
       <View style={styles.headerContainer}>
@@ -16,20 +14,7 @@ const Header = ({ title = '' }) => {
         {/* Icons Area */}
         <View style={styles.iconsContainer}>
           {/* Menu Icon */}
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.iconArea}
-            onPress={() => navigation.openDrawer()}
-          >
-            <Icon
-              resizeMode="contain"
-              style={styles.menuIcon}
-              type={Icons.Ionicons}
-              name="menu"
-              color={'white'}
-              size={30}
-            />
-          </TouchableOpacity>
+     
 
           {/* Notification Icon */}
           <TouchableOpacity

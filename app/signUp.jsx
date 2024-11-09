@@ -215,14 +215,12 @@ const SignUp = () => {
                             secureTextEntry={!showPassword}
                             onChangeText={value => passwordRef.current = value}
                             isError={!!errors.password}
+                            isPassword={true} 
+                            eyesIcon={showPassword ?  <Icon name="eyeoff" size={26} strokeWidth={1.6}  {...(errors.password ? { color: 'red' } : {})}  onPress={() => setShowPassword(prev => !prev)}   /> : <Icon name="eye" size={26} strokeWidth={1.6}  {...(errors.password ? { color: 'red' } : {})}    onPress={() => setShowPassword(prev => !prev)} />   }
+
 
                         />
-                        {passwordRef.current && (
-                            <Text style={styles.showPasswordText} onPress={() => setShowPassword(prev => !prev)}>
-                                {showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
-                            </Text>
-                        )}
-
+                         
                         <Pressable onPress={toggleDatePicker}>
                             <Input
                                 icon={<Icon name="date" size={26} strokeWidth={1.6}   {...(errors.dateOfBirth ? { color: 'red' } : {})} />}
@@ -312,7 +310,7 @@ const SignUp = () => {
                                     height: hp(7.2),
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    borderWidth: 0.4,
+                                    borderWidth: 0.5,
                                     borderColor: theme.colors.text,
                                     borderRadius: theme.radius.xxl,
                                     borderCurve: 'continuous',
@@ -321,7 +319,10 @@ const SignUp = () => {
                                 flagContainer: {
                                     borderTopLeftRadius: 7,
                                     borderBottomLeftRadius: 7,
-                                    backgroundColor: 'white',
+                                   backgroundColor: 'white',
+                                    borderColor:"black" ,
+                                    padding:8,
+
                                     justifyContent: 'center',
                                 },
                                 flag: {},
@@ -350,7 +351,8 @@ const SignUp = () => {
                                     borderWidth: 1,
                                     borderColor:'white',
                                       marginVertical: 4,
-                                    paddingVertical: 0,
+                                    paddingVertical: 2,
+                                    borderBottomColor:'black'
                                 },
                                 noCountryText: {},
                                 noCountryContainer: {},

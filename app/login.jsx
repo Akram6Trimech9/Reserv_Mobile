@@ -23,10 +23,11 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { setIsLogged, setUser } = useGlobalContext();  
     const { getCurrentUser, saveUser } = useContext(UserContext);
+
     const onSubmit = async () => {
         Keyboard.dismiss();  
         const signinData = { email: emailRef.current, password: passwordRef.current };
-
+    
         if (!emailRef.current || !passwordRef.current) { 
             Alert.alert('Connexion', "Veuillez remplir tous les champs");
             return; 
@@ -39,23 +40,32 @@ const Login = () => {
     
             if (loginRes.status === 200) {
                 const { access_token, refresh_token } = loginRes.data;
-                setIsLogged(true)
-                setUser("wiou")
+                setIsLogged(true);
                 await getCurrentUser(access_token);
                 await AsyncStorage.setItem('access_token', access_token);
                 await AsyncStorage.setItem('refresh_token', refresh_token);
     
-                // Await these calls to get their resolved values
-                // const allKeys = await AsyncStorage.getAllKeys();
-                // console.log("Stored Keys: ", allKeys, "Refresh Token: ", refreshToken);
-    
-                // Uncomment to navigate after successful login
                 router.navigate('home');
-                // Alert.alert('Success', "Login");
             }
         } catch (error) {
-            if (error.status === 400) {
-                Alert.alert("Erreur", "Identifiants incorrects. Veuillez réessayer.");
+            if (error.response && error.response.data) {
+                const errorMessage = error.response.data.message || 'Une erreur est survenue. Veuillez réessayer.';
+                
+                // Handle email not confirmed error
+                if (errorMessage.toLowerCase().includes("your email")) {
+                    Alert.alert("Erreur", "Votre email n'est pas encore confirmé. Veuillez vérifier votre boîte de réception.");
+                }
+                // Handle incorrect password error
+                else if (errorMessage.toLowerCase().includes("password")) {
+                    Alert.alert("Erreur", "Votre mot de passe est incorrect.");
+                }
+                // Handle user does not exist error
+                else if (errorMessage.toLowerCase().includes("user does not exist")) {
+                    Alert.alert("Erreur", 'Votre email est incorrect ou l\'utilisateur n\'existe pas.');
+                }
+                else {
+                    Alert.alert("Erreur", errorMessage);
+                }
             } else {
                 Alert.alert("Erreur", "Une erreur est survenue. Veuillez réessayer.");
             }
@@ -63,7 +73,7 @@ const Login = () => {
             setLoading(false);
         }
     };
-    
+
     return (
         <ScreenWrapper bg="white">
             <StatusBar style="dark" />
@@ -87,15 +97,13 @@ const Login = () => {
                         placeholder='Entrez votre mot de passe'
                         secureTextEntry={!showPassword}
                         onChangeText={value => passwordRef.current = value}
+                        isPassword={true}
+                        eyesIcon={showPassword 
+                            ? <Icon name="eyeoff" size={26} strokeWidth={1.6} onPress={() => setShowPassword(prev => !prev)} />
+                            : <Icon name="eye" size={26} strokeWidth={1.6} onPress={() => setShowPassword(prev => !prev)} />
+                        }
                     />
-                    {passwordRef.current && (
-                        <Text
-                            style={styles.showPasswordText}
-                            onPress={() => setShowPassword(prev => !prev)}
-                        >
-                            {showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
-                        </Text>
-                    )}
+                    
                     <Text
                         style={styles.forgotPassword}
                         onPress={() => router.push('forgetPassword')}

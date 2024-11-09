@@ -1,11 +1,11 @@
-[
-  {
+export const productsList = [
+      {
       "id": "1",
       "name": "Camp Nou",
       "capacity": "99,354",
       "location": "Barcelona, Spain",
       "team": "FC Barcelona",
-      "imageUrl": "images/camp_nou.png"
+      "imageUrl": "../../assets/images/s1.jpg"
   },
   {
       "id": "2",
@@ -13,7 +13,7 @@
       "capacity": "74,879",
       "location": "Manchester, England",
       "team": "Manchester United",
-      "imageUrl": "images/old_trafford.png"
+      "imageUrl": "../../assets/images/s1.jpg"
   },
   {
       "id": "3",
@@ -21,7 +21,7 @@
       "capacity": "75,000",
       "location": "Munich, Germany",
       "team": "Bayern Munich",
-      "imageUrl": "images/allianz_arena.png"
+      "imageUrl": "../../assets/images/s1.jpg"
   },
   {
       "id": "4",
@@ -29,6 +29,6 @@
       "capacity": "81,044",
       "location": "Madrid, Spain",
       "team": "Real Madrid",
-      "imageUrl": "images/santiago_bernabeu.png"
+      "imageUrl": "../../assets/images/s1.jpg"
   }
 ]

@@ -34,8 +34,7 @@ export const login = async (data) => {
             'Content-Type': 'application/json',  
         },
     });
-    console.log(response)
-    return response;  
+     return response;  
 };
 
 export const forgotPassword = async (data) => {

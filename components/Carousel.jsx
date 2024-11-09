@@ -32,6 +32,7 @@ const CarouselI = () => {
             height = {width / 2}
             data = { list }
             autoPlay={true}
+            styles={styles.img} 
             pagingEnabled={pagingEnabled}
             scrollAnimationDuration={1000}
             renderItem={({ item }) => (
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
     },
     img: {
-        width: '100%',
-        height: '100%'
-    }
+ 
+        borderRadius: 24,
+     }
 })

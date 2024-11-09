@@ -16,6 +16,7 @@ import { hp, wp } from "../../helpers/common";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import UpdateProfile from "../../components/Update";
 import { ScrollView } from "react-native-web";
+import PageHeader from "../../components/PageHeader";
 
 const profile_picture_default = require("../../assets/images/profile_picture.png");
 const account = {iconType :Icons.MaterialCommunityIcons , name:'account' , color:'green' , size:25}
@@ -123,19 +124,23 @@ console.log('rr',openUpdate);
     <ScreenWrapper bg="white" style={styles.safeArea} >
 
     <StatusBar style="dark" />
+
     <View style={styles.container}>
 
-  
+
 
       
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.topSection}>
+
             <TouchableOpacity onPress={pickImage} style={styles.propicArea}>
 
            { profilePicture && 
               <Image source={{ uri: profilePicture }} style={styles.propic} />
 
            }
+                     <PageHeader title="Detail" showHeaderRight={true} bgColor='#F9F9F9' />
+
             </TouchableOpacity>
             <Text style={styles.name}>Akram Prasad</Text>
             <Text style={styles.membership}>email@yahoo.com</Text>

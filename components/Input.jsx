@@ -14,6 +14,8 @@ const Input = (props) => {
                 ref={props.inputRef && props.inputRef}
                 {...props}
             />
+           {props.isPassword && props.eyesIcon}
+
         </View>
     );
 };

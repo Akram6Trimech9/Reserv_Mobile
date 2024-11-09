@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from "react-native";
   import ScreenWrapper from "../components/ScreenWrapper";
 import Welcome from "./welcome";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-const Drawer = createDrawerNavigator();
+ const Drawer = createDrawerNavigator();
 
 const Index = () => {
     return (
